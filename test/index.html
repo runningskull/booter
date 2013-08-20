@@ -1,13 +1,14 @@
 <!doctype html>
 <html>
-    <head><script>document.domain='raafl.com'</script></head>
+    <head></head>
 
     <body>
         <script src="booter.js"></script>
 
         <script>
+            window.title = "TESTING"
             //booter.loadScript('//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js')
-            booter.loadScript('fakelib.js')
+            booter.loadScript('fakelib.js', ['FOO', 'BAR'])
         </script>
     </body>
 </html>

@@ -20,12 +20,19 @@ var DOC = 'document'
   , CWIN = 'contentWindow'
 
 
+function isArray(x) {
+  return Object.prototype.toString.call(x) == '[object Array]'
+}
+
+
 booter.loadScript = function(url, exports) {
   var frame
 
+  if (! isArray(exports)) exports = [exports];
+
   function buildIframeHTML() {
     return [
-      '<head><script>document.domain="raafl.com"</script></head><',BODY,' onload="var d=', DOC,
+      '<head></head><',BODY,' onload="var d=', DOC,
       ';d.getElementsByTagName(\'head\')[0].', APPEND, 
       '(d.', CREATE, '(\'script\')).', SRC, '=\'', url,
       "'\"></",BODY,">"
@@ -79,14 +86,21 @@ booter.loadScript = function(url, exports) {
                    + buildIframeHTML().replace(/"/g, String.fromCharCode(92) + '"') 
                    + '");d.close();'
     }
+
+    var script = frame[CWIN][DOC].getElementsByTagName('script')[0]
+    script.addEventListener
+      ? script.addEventListener('load', exportGlobals)
+      : script.attachEvent('onload', exportGlobals)
   }
 
   function exportGlobals() {
-    console.log('jQuery:', frame.contentWindow.SHINER)
+    for (var i=0, len=exports.length; i<len; i++) {
+      var x = exports[i]
+      window[x] = frame[CWIN][x]
+    }
   }
 
   loadScriptInsideFrame()
-  exportGlobals()
 }
 
 
