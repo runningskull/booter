@@ -1,7 +1,13 @@
+/** Big ups to https://github.com/olark/lightningjs for
+ *  figuring out some of the trickier cross-browser stuff!
+ **/
+
 ;(function(window, document) {
 
 if (!! window.booter) return;
 window.booter = {}
+
+var frames = {}
 
 
 // Strings defined here to improve compressability
@@ -14,10 +20,12 @@ var DOC = 'document'
   , CWIN = 'contentWindow'
 
 
-booter.loadScript = function(url) {
+booter.loadScript = function(url, exports) {
+  var frame
+
   function buildIframeHTML() {
     return [
-      '<head></head><',BODY,' onload="var d=', DOC,
+      '<head><script>document.domain="raafl.com"</script></head><',BODY,' onload="var d=', DOC,
       ';d.getElementsByTagName(\'head\')[0].', APPEND, 
       '(d.', CREATE, '(\'script\')).', SRC, '=\'', url,
       "'\"></",BODY,">"
@@ -26,26 +34,23 @@ booter.loadScript = function(url) {
 
   function loadScriptInsideFrame() {
     // try to get a handle on the body. If we can't, try again in a bit
-    console.log('000', document, body)
     var body = document[BODY]
     if (!body) return setTimeout(loadScriptInsideFrame, 100)
 
     var frameWrapper = document[CREATE](DIV)
       , frameContainer = frameWrapper[APPEND](document[CREATE](DIV))
-      , frame = document[CREATE]('iframe')
       , domainSrc
 
-    console.log(111)
+    frame = document[CREATE]('iframe')
+
     frameWrapper.style.display = 'none'
     body.insertBefore(frameWrapper, body.firstChild)
     frame.frameBorder = "0"
 
     // Otherwise we'll get security warnings in IE6 on SSL pages
-    console.log(222)
     if (/MSIE[ ]+6/.test(navigator.userAgent))
       frame[SRC] = 'javascript:false';
 
-    console.log(333)
     frame.allowTransparency = 'true'
     frameContainer[APPEND](frame)
 
@@ -54,8 +59,6 @@ booter.loadScript = function(url) {
     // for the frame. In IE > 6, these URL's will normally prevent the window
     // from triggering 'onload', so we only use the javascript URL to open the
     // document and set its document.domain
-    console.log(444)
-    debugger
     try {
       frame[CWIN][DOC].open()
     } catch(ex) {
@@ -67,7 +70,6 @@ booter.loadScript = function(url) {
     // src hasn't had time to 'settle', so trying to access the contentDocument
     // will throw an error. Luckily, in IE 7, we can finish writing the HTML
     // with the iframe src without preventing the page from 'onload'ing
-    console.log(555, frame[CWIN][DOC])
     try {
       var frameDocument = frame[CWIN][DOC]
       frameDocument.write(buildIframeHTML())
@@ -79,7 +81,12 @@ booter.loadScript = function(url) {
     }
   }
 
+  function exportGlobals() {
+    console.log('jQuery:', frame.contentWindow.SHINER)
+  }
+
   loadScriptInsideFrame()
+  exportGlobals()
 }
 
 
