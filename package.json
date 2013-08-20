@@ -1,0 +1,25 @@
+{
+  "name": "booter",
+  "version": "0.0.0",
+  "description": "booter ======",
+  "main": "booter.js",
+  "dependencies": {
+    "grunt": "0.4.1",
+    "browserify": "2.28.0",
+    "grunt-browserify": "1.2.3",
+    "grunt-contrib-concat": "~0.3.0",
+    "extend": "~1.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Rafflecopter/booter.git"
+  },
+  "author": "Juan Patten (jr@metricfeat.com)",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "97eb652a6d8b6063ff2c1c696857389641a4d165"
+}
