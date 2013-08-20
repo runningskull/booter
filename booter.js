@@ -25,10 +25,10 @@ function isArray(x) {
 }
 
 
-booter.loadScript = function(url, exports) {
+booter.loadScript = function(url, globalExports) {
   var frame
 
-  if (! isArray(exports)) exports = [exports];
+  if (! isArray(globalExports)) globalExports = [globalExports];
 
   function buildIframeHTML() {
     return [
@@ -94,8 +94,8 @@ booter.loadScript = function(url, exports) {
   }
 
   function exportGlobals() {
-    for (var i=0, len=exports.length; i<len; i++) {
-      var x = exports[i]
+    for (var i=0, len=globalExports.length; i<len; i++) {
+      var x = globalExports[i]
       window[x] = frame[CWIN][x]
     }
   }
