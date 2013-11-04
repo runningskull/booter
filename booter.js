@@ -22,8 +22,12 @@ function isArray(x) {
 }
 
 
-booter.loadScript = function(url, globalExports) {
-  var frame
+// Params:
+//  - url: full or relative URL of script to load inside iframe
+//  - globalExports: which globals to pull out of the iframe
+//  - silent: return exported globals, but don't attach to parent window
+booter.loadScript = function(url, globalExports, silent) {
+  var frame, pending={}
 
   if (! isArray(globalExports)) globalExports = [globalExports];
 
@@ -91,13 +95,17 @@ booter.loadScript = function(url, globalExports) {
   }
 
   function exportGlobals() {
+    var globs = []
     for (var i=0, len=globalExports.length; i<len; i++) {
-      var x = globalExports[i]
-      window[x] = frame[CWIN][x]
+      var key=globalExports[i], value=frame[CWIN][key]
+      globs.push(value)
+      silent || (window[key] = value)
     }
+    pending.onReady && pending.onReady.apply(null, globs)
   }
 
   loadScriptInsideFrame()
+  return pending
 }
 
 

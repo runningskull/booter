@@ -7,8 +7,12 @@
 
         <script>
             window.title = "TESTING"
-            //booter.loadScript('//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js')
-            booter.loadScript('fakelib.js', ['FOO', 'BAR'])
+
+            var fakelib = booter.loadScript('fakelib.js', ['FOO', 'BAR'])
+            fakelib.onReady = function(){ console.log('BOOTED', FOO, BAR) }
+
+            var fakelib2 = booter.loadScript('fakelib2.js', ['FOO2', 'BAR2'], true)
+            fakelib.onReady = function(foo2, bar2){ console.log('BOOTED2', [window.FOO2, foo2], [window.BAR2, bar2])}
         </script>
     </body>
 </html>
