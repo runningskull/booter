@@ -2,13 +2,10 @@
  *  figuring out some of the trickier cross-browser stuff!
  **/
 
-;(function(window, document) {
+;(function() {
 
-if (!! window.booter) return;
-window.booter = {}
-
-var frames = {}
-
+var booter = {}
+  , frames = {}
 
 // Strings defined here to improve compressability
 var DOC = 'document'
@@ -104,5 +101,14 @@ booter.loadScript = function(url, globalExports) {
 }
 
 
+if (typeof exports !== 'undefined') {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = booter.loadScript;
+  }
+} else {
+  window.booter = booter
+}
 
-}.call(this, window, document));
+
+}());
+
