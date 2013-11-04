@@ -1,7 +1,9 @@
 booter
 ======
 
-A tiny browser-side script loader designed to load scripts for embedded widgets
+A tiny browser-side script loader designed to load scripts for embedded 
+widgets that safely loads scripts inside an iframe and exposes globals
+you select to the outer page.
 
 ## Usage options:
 
