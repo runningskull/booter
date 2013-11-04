@@ -1,7 +1,7 @@
 {
   "name": "booter",
-  "version": "0.0.0",
-  "description": "booter ======",
+  "version": "0.0.1",
+  "description": "Browser-side script loader",
   "main": "booter.js",
   "dependencies": {},
   "devDependencies": {},
