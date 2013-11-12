@@ -23,5 +23,6 @@ loadScript('//my-domain.com/js/my-larger-embedded-script.js')
 
 ## TODO:
 
-Better docs & explanation about what booter does right
+- Better docs & explanation about what booter does right
+- Set doctype on iframe?
 
