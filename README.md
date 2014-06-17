@@ -40,7 +40,7 @@ var loadScript = require('booter')  // using browserify. for other options, see 
 
 // Tell booter which globals you want, and provide a callback.
 // Booter will load your code inside a sandboxed iframe, and pass you the globals.
-loadScript('//my-domain.com/js/my-script.js', ['MYLIB'], onReady)
+loadScript('//my-domain.com/js/my-lib.js', ['MYLIB'], onReady)
 
 function onReady(my_lib) {
     // `my_lib` is the interface exported by my-lib.js
