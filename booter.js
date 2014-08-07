@@ -28,16 +28,19 @@ function isArray(x) {
 //  - silent: return exported globals, but don't attach to parent window
 booter.loadScript = function(url, globalExports, cb) {
   var frame, pending={}
+    , urls = typeof url === 'object' ? url : [url]
 
   if (! isArray(globalExports)) globalExports = [globalExports];
 
   function buildIframeHTML() {
-    return [
-      '<head></head><',BODY,' onload="var d=', DOC,
-      ';d.getElementsByTagName(\'head\')[0].', APPEND, 
-      '(d.', CREATE, '(\'script\')).', SRC, '=\'', url,
-      "'\"></",BODY,">"
-    ].join('')
+    return ['<head></head><',BODY,' onload="', buildOnLoad(), '"></', BODY, '>'].join('')
+  }
+
+  function buildOnLoad() {
+    var prefix = ['var d=', DOC, ',h=d.getElementsByTagName(\'head\')[0];']
+    for (var i = 0; i < urls.length; i++)
+      prefix = prefix.concat(['h.',APPEND,'(d.',CREATE,'(\'script\')).', SRC, '=\'', urls[i], '\';'])
+    return prefix.join('')
   }
 
   function loadScriptInsideFrame() {
@@ -73,7 +76,7 @@ booter.loadScript = function(url, globalExports, cb) {
       domainSrc = 'javascript:var d=' + DOC + ".open();d.domain='" + document.domain + "';"
       frame[SRC] = domainSrc + 'void(0);'
     }
-  
+
     // Set the HTML of the iframe. In IE 6, the document.domain from the iframe
     // src hasn't had time to 'settle', so trying to access the contentDocument
     // will throw an error. Luckily, in IE 7, we can finish writing the HTML
@@ -83,8 +86,8 @@ booter.loadScript = function(url, globalExports, cb) {
       frameDocument.write(buildIframeHTML())
       frameDocument.close()
     } catch(ex) {
-      frame[SRC] = domainSrc + 'd.write("' 
-                   + buildIframeHTML().replace(/"/g, String.fromCharCode(92) + '"') 
+      frame[SRC] = domainSrc + 'd.write("'
+                   + buildIframeHTML().replace(/"/g, String.fromCharCode(92) + '"')
                    + '");d.close();'
     }
 
