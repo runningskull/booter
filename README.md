@@ -56,10 +56,10 @@ function onReady(my_lib) {
 }
 ```
 
-When you (or your end-user) call any method on MYLIB, that method will 
-be executed in the sandboxed iframe context. There are no restrictions 
-on what you can pass to exposed function. For example, you can pass 
-parent-page DOM nodes to an exposed function with no worries. Outside a 
+When you (or your end-user) call any method on MYLIB, that method will
+be executed in the sandboxed iframe context. There are no restrictions
+on what you can pass to exposed function. For example, you can pass
+parent-page DOM nodes to an exposed function with no worries. Outside a
 few contrived examples, you'll never notice or care that it's in an iframe.
 
 <hr>
@@ -72,6 +72,11 @@ few contrived examples, you'll never notice or care that it's in an iframe.
 // inside your load.js
 var loadScript = require('booter')
 loadScript('//my-domain.com/js/my-lib.js')
+```
+
+You can also load multiple scripts at a time
+```
+loadScript(['//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js', '//my-domain.com/js/my-lib.js'])
 ```
 
 ### Using a &lt;script> tag
